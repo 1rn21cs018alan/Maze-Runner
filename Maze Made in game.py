@@ -162,6 +162,6 @@ def the_game(sizet,tile_size):
     # mouse.move(243,70,absolute=True)
 
 
-val=10
+val=int(input("Enetr no of tiles"))
 scrsize=750
 the_game(val+2,int(scrsize/(val+2)))
