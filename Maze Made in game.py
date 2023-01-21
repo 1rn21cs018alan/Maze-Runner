@@ -6,6 +6,7 @@
 import random
 import pygame
 import sys
+import time
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,path):
@@ -18,7 +19,9 @@ class Player(pygame.sprite.Sprite):
         x=int(x/width)
         y=int(y/height)
         if(x<1) or (x>sizet-2) or (y<1) or (y>sizet-2) :
-            return
+            return True
+        if(arr[x][y]==0):
+            return False
         for i in [-1,0,1]:
             for j in [-1,0,1]:
                 if(arr[x+i][y+j]==1):
@@ -28,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         #         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(x*width,y*height,width,height))  
         
         self.rect.center=pygame.mouse.get_pos()
-        # return screen
+        return True
 
 def show_maze(arr,maze_size):
     for i in range(0,maze_size):
@@ -130,7 +133,7 @@ def the_game(sizet,tile_size):
     pygame.init()  
     screen = pygame.display.set_mode((tile_size*sizet,tile_size*sizet))
     # screen = pygame.display.set_mode((tile_size*sizet,tile_size*sizet),pygame.FULLSCREEN)    
-    done = False
+    done = True
     x=int(tile_size/2)
     y=int(tile_size/2)
     recwidth=tile_size
@@ -142,9 +145,11 @@ def the_game(sizet,tile_size):
     clock=pygame.time.Clock()
     
     pygame.display.flip()
-    pygame.mouse.set_pos(x,y)
+    for i in range(0,100):
+        pygame.mouse.set_pos(recwidth*1.5,recwidth*1.5)
     # pygame.mouse.set_visible(False)
-    while not done:
+
+    while True:
         pygame.display.flip()  
         for event in pygame.event.get():  
             if event.type == pygame.QUIT:
@@ -154,14 +159,26 @@ def the_game(sizet,tile_size):
         screen.blit(background,(0,0))
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect((sizet-2)*tile_size,(sizet-2)*tile_size,tile_size,tile_size))  
         ply.draw(screen)
-        # screen=
+        (y,x)=pygame.mouse.get_pos()
         ply.update(screen,arr,recheight,recwidth,sizet)
-        clock.tick(60)  
-
+        clock.tick(60) 
+        if(arr[int(x/recwidth)][int(y/recwidth)]==0):
+            pygame.mouse.set_pos(recwidth*1.5,recwidth*1.5)
+        
+        if(arr[int(x/recwidth)][int(y/recwidth)]==2):
+            print("Congrats")
+            pygame.display.quit()
+            pygame.quit()
+            sys.exit()
     
-    # mouse.move(243,70,absolute=True)
 
-
-val=int(input("Enetr no of tiles"))
+val=10
+al=""
+with open("siz.txt",mode="r") as MyFile:
+    for x in MyFile:
+        al=al+x
+val=int(al)
+# val=int(input("Enter no of tiles: "))
+time.sleep(1)
 scrsize=750
 the_game(val+2,int(scrsize/(val+2)))
