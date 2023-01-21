@@ -13,8 +13,22 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(path)
         self.rect= self.image.get_rect()
     
-    def update(self,arr):
+    def update(self,screen,arr,height,width,sizet):
+        (y,x)=pygame.mouse.get_pos()
+        x=int(x/width)
+        y=int(y/height)
+        if(x<1) or (x>sizet-2) or (y<1) or (y>sizet-2) :
+            return
+        for i in [-1,0,1]:
+            for j in [-1,0,1]:
+                if(arr[x+i][y+j]==1):
+                        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect((y+j)*width,(x+i)*height,width,height))  
+                        
+        # if(arr[y][x]==1):
+        #         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(x*width,y*height,width,height))  
+        
         self.rect.center=pygame.mouse.get_pos()
+        # return screen
 
 def show_maze(arr,maze_size):
     for i in range(0,maze_size):
@@ -87,7 +101,8 @@ def mainmaze(mazesize):
                 break
         if(check==False):
             # end_point.append([(x,y)])
-            ([(x,y)])=random.choice(valid_space)   
+            ([(x,y)])=random.choice(valid_space) 
+    show_maze(arr,maze_size)  
 
 
     # for i in range(0,maze_size):
@@ -109,7 +124,7 @@ def mainmaze(mazesize):
 
 
 
-mainmaze(20)
+# mainmaze(20)
 def the_game(sizet,tile_size):
     arr=mainmaze(sizet)
     pygame.init()  
@@ -125,6 +140,9 @@ def the_game(sizet,tile_size):
     ply=pygame.sprite.Group()
     ply.add(ply1)
     clock=pygame.time.Clock()
+    
+    pygame.display.flip()
+    pygame.mouse.set_pos(x,y)
     # pygame.mouse.set_visible(False)
     while not done:
         pygame.display.flip()  
@@ -134,11 +152,16 @@ def the_game(sizet,tile_size):
                 pygame.quit()
                 sys.exit()
         screen.blit(background,(0,0))
+        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect((sizet-2)*tile_size,(sizet-2)*tile_size,tile_size,tile_size))  
         ply.draw(screen)
-        ply.update(arr)
+        # screen=
+        ply.update(screen,arr,recheight,recwidth,sizet)
         clock.tick(60)  
 
     
     # mouse.move(243,70,absolute=True)
 
-the_game(6,125)
+
+val=10
+scrsize=750
+the_game(val+2,int(scrsize/(val+2)))
