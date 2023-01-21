@@ -44,12 +44,12 @@ def make_path(x,y,arr,dir,maze_size,limit):
     arr[tx][ty]=1
     return tx,ty,arr,True
 
-def mainmaze():
+def mainmaze(mazesize):
     # limit=int(input("Enter border size:"))
     limit=1
-    maze_size=int(input("Enter maze size:"))
+    # maze_size=int(input("Enter maze size:"))
     # maze_size=15
-    tile_size=75
+    maze_size=mazesize
     arr =[[0 for i in range(maze_size)]for j in range(maze_size)]
     flag=0
     x,y=limit,limit
@@ -94,18 +94,8 @@ def mainmaze():
 
     # for each in arr:
     #     print(each)
+    return arr
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+mainmaze(20)
