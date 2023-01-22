@@ -25,7 +25,10 @@ class Player(pygame.sprite.Sprite):
         for i in [-1,0,1]:
             for j in [-1,0,1]:
                 if(arr[x+i][y+j]==1):
-                        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect((y+j)*width,(x+i)*height,width,height))  
+                        pygame.draw.rect(screen, (255-100*(abs(i)+abs(j)),255-100*(abs(i)+abs(j)),255-100*(abs(i)+abs(j))), pygame.Rect((y+j)*width,(x+i)*height,width,height))  
+
+        # if(arr[x][y]==1):
+        #         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect((y)*width,(x)*height,width,height))  
                         
         # if(arr[y][x]==1):
         #         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(x*width,y*height,width,height))  
@@ -182,3 +185,10 @@ val=int(al)
 time.sleep(1)
 scrsize=750
 the_game(val+2,int(scrsize/(val+2)))
+
+
+time.sleep(1)
+
+time.sleep(1)
+
+time.sleep(1)
