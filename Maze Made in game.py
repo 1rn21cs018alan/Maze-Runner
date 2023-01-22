@@ -14,18 +14,22 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(path)
         self.rect= self.image.get_rect()
     
-    def update(self,screen,arr,height,width,sizet):
+    def update(self,screen,arr,height,width,sizet,visibility):
         (y,x)=pygame.mouse.get_pos()
         x=int(x/width)
         y=int(y/height)
+        lim=visibility
+        low=100/lim
         if(x<1) or (x>sizet-2) or (y<1) or (y>sizet-2) :
             return True
         if(arr[x][y]==0):
             return False
-        for i in [-1,0,1]:
-            for j in [-1,0,1]:
+        for i in range(-lim,lim+1):
+            for j in range(-lim,lim+1):
+                if(x+i<0) or (x+i>=sizet) or (y+j<0) or (y+j>=sizet) :
+                    continue
                 if(arr[x+i][y+j]==1):
-                        pygame.draw.rect(screen, (255-100*(abs(i)+abs(j)),255-100*(abs(i)+abs(j)),255-100*(abs(i)+abs(j))), pygame.Rect((y+j)*width,(x+i)*height,width,height))  
+                        pygame.draw.rect(screen, (255-low*(abs(i)+abs(j)),255-low*(abs(i)+abs(j)),255-low*(abs(i)+abs(j))), pygame.Rect((y+j)*width,(x+i)*height,width,height))  
 
         # if(arr[x][y]==1):
         #         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect((y)*width,(x)*height,width,height))  
@@ -122,7 +126,8 @@ def mainmaze(mazesize):
                 
     # show_maze(arr,maze_size)
 
-    print(flag)
+    if(flag==10000):
+        return mainmaze(mazesize)
 
     # for each in arr:
     #     print(each)
@@ -146,7 +151,11 @@ def the_game(sizet,tile_size):
     ply=pygame.sprite.Group()
     ply.add(ply1)
     clock=pygame.time.Clock()
-    
+
+
+    visibility=2
+
+
     pygame.display.flip()
     for i in range(0,100):
         pygame.mouse.set_pos(recwidth*1.5,recwidth*1.5)
@@ -163,16 +172,15 @@ def the_game(sizet,tile_size):
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect((sizet-2)*tile_size,(sizet-2)*tile_size,tile_size,tile_size))  
         ply.draw(screen)
         (y,x)=pygame.mouse.get_pos()
-        ply.update(screen,arr,recheight,recwidth,sizet)
+        ply.update(screen,arr,recheight,recwidth,sizet,visibility)
         clock.tick(60) 
         if(arr[int(x/recwidth)][int(y/recwidth)]==0):
             pygame.mouse.set_pos(recwidth*1.5,recwidth*1.5)
         
         if(arr[int(x/recwidth)][int(y/recwidth)]==2):
-            print("Congrats")
             pygame.display.quit()
             pygame.quit()
-            sys.exit()
+            return
     
 
 val=10
@@ -189,6 +197,7 @@ the_game(val+2,int(scrsize/(val+2)))
 
 time.sleep(1)
 
-time.sleep(1)
+print("Congrats")
 
+time.sleep(1)
 time.sleep(1)
