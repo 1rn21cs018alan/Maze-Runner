@@ -267,6 +267,14 @@ class Game():
                                         pause_menu=False
                                         self.get_prev_screen()
                                         clock.tick(60)
+                                    elif(event.key == pygame.K_F12):
+                                        pause_menu=False
+                                        ply1.pos_x=sizetx-2
+                                        ply1.pos_y=sizety-2
+                                        ply.update(screen,arr,recheight,recwidth,sizetx,sizety,visibility,None) 
+                                        ply.draw(screen)
+                                        clock.tick(60)
+
                                 elif (event.type == pygame.MOUSEBUTTONDOWN):
                                     mouse_pos=pygame.mouse.get_pos()
                                     if(mouse_pos[0]>=button_coord[0]+menu_coord[2]) and (mouse_pos[0]<=button_coord[0]+button_coord[1]+menu_coord[2]):#within button holder location in x axis
@@ -346,6 +354,14 @@ class Game():
         return coord_list,menu_size
     
     def congrats(self):
+        end_screen=pygame.Surface([1400,800])
+        end_screen.fill((125,150,125))
+        self.screen.blit(end_screen,(100,50))
+        self.screen.blit(self.font.render('Congrats', True, (255,0,0)),(700,450))
+        pygame.display.flip()
+        self.clock.tick(60)
+        time.sleep(2)
+        self.clock.tick(1)
         return
 
 
